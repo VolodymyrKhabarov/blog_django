@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'posts',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'myblog',
-        'USER': 'myname',
+        'USER': 'name',
         'PASSWORD': 'mypass',
         'HOST': 'localhost',
         'PORT': '5432',
@@ -78,6 +79,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Authentication
+AUTH_USER_MODEL = "users.UserModel"
 
 LANGUAGE_CODE = 'en-us'
 
