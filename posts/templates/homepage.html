@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static%}
+{% block content %}
+{% include "_carousel.html" %}
+  <main class="container">
+    <div class="row">
+      <section class="col-md-9 mb-2" role="main">
+        <h1 class="h1">Blog posts</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4 position-relative">
+          {% for object in object_list %}
+          <article class="col">
+            <div class="card shadow">
+              <img src="https://loremflickr.com/320/240?random=1" alt="Blog post image" class="card-img-top">
+              <div class="card-body">
+                <strong class="fw-light">{{ object.category }}</strong>
+                <h2 class="card-title">{{ object.title }}</h2>
+                <small>
+                  <i class="bi bi-person mx-1"></i><a href="" class="fw-bolder link-secondary">Article Author</a>
+                  <i class="bi bi-calendar mx-1"></i><span>{{ object.updated_at}}</span>
+                </small>
+                <p class="card-text">{{ object.body|truncatewords:50 }}</p>
+                <a href="{% url "detail" object.slug %}" class="card-link text-body fw-bold">Continue reading...</a>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+
+          <nav class="blog-pagination" aria-label="Pagination">
+            <a href="" class="btn btn-outline-primary rounded-pill">Older</a>
+            <a href="" class="btn btn-outline-success rounded-pill">Newer</a>
+          </nav>
+
+        </div>
+      </section>
+      {% include "_footer.html" %}
+    </div>
+  </main>
+{% endblock content %}
