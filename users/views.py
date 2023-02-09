@@ -6,9 +6,6 @@ from django.contrib.auth import authenticate, login, logout
 from users.models import UserModel
 
 
-# def signin_view(request: HttpRequest) -> HttpResponse:
-#     return render(request, "registration/signin.html")
-
 def signin_view(request: HttpRequest):
 
     if request.method == "POST":
@@ -26,10 +23,6 @@ def signin_view(request: HttpRequest):
         return render(request, "registration/signin.html")
 
     return render(request, "registration/signin.html")
-
-
-# def signup_view(request: HttpRequest) -> HttpResponse:
-#     return render(request, "registration/signup.html")
 
 def signup_view(request: HttpRequest):
 
