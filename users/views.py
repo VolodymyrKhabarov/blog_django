@@ -1,51 +1,46 @@
 from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 
-from users.models import UserModel
+from users.forms import SignInForm, SignUpForm
 
 
 def signin_view(request: HttpRequest):
 
     if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
+        form = SignInForm(data=request.POST)
 
-        user = authenticate(request, username=username, password=password)
-
-        if user:
+        if form.is_valid():
+            user = form.get_user()
             login(request, user)
             redirect_url = reverse_lazy("list")
 
             return HttpResponseRedirect(redirect_url)
 
-        return render(request, "registration/signin.html")
+        form = SignInForm()
+        return render(request, "registration/signin.html", {"form": form})
 
-    return render(request, "registration/signin.html")
+    form = SignInForm()
+    return render(request, "registration/signin.html", {"form": form})
+
 
 def signup_view(request: HttpRequest):
 
     if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
-        password = request.POST["password"]
-        confirm_password = request.POST["confirm_password"]
+        form = SignUpForm(request.POST)
 
-        if password != confirm_password:
-            return render(request, "registration/signup.html")
+        if form.is_valid():
+            form.save()
+            redirect_url = reverse_lazy("signin")
 
-        try:
-            UserModel.objects.get(username=username)
-            return render(request, "registration/signup.html")
-        except UserModel.DoesNotExist:
-            UserModel.objects.create_user(username=username, email=email, password=password)
+            return HttpResponseRedirect(redirect_url)
 
-        redirect_url = reverse_lazy("signin")
-
+        redirect_url = reverse_lazy("signup")
         return HttpResponseRedirect(redirect_url)
 
-    return render(request, "registration/signup.html")
+    form = SignUpForm()
+    return render(request, "registration/signup.html", {"form": form})
 
 
 def logout_view(request: HttpRequest):

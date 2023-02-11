@@ -6,4 +6,8 @@ from django.contrib.auth.models import AbstractUser
 
 
 class UserModel(AbstractUser):
-    pass
+
+    class Meta:
+        "Class Meta is used to provide metadata to the UserModel model"
+
+        db_table = "users"
