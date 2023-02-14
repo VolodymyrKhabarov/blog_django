@@ -18,10 +18,9 @@ def signin_view(request: HttpRequest):
 
             return HttpResponseRedirect(redirect_url)
 
+    if request.method == "GET":
         form = SignInForm()
-        return render(request, "registration/signin.html", {"form": form})
 
-    form = SignInForm()
     return render(request, "registration/signin.html", {"form": form})
 
 
@@ -36,10 +35,9 @@ def signup_view(request: HttpRequest):
 
             return HttpResponseRedirect(redirect_url)
 
-        redirect_url = reverse_lazy("signup")
-        return HttpResponseRedirect(redirect_url)
-
-    form = SignUpForm()
+    if request.method == "GET":
+        form = SignUpForm()
+        
     return render(request, "registration/signup.html", {"form": form})
 
 

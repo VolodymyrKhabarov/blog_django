@@ -10,4 +10,4 @@ class UserModel(AbstractUser):
     class Meta:
         "Class Meta is used to provide metadata to the UserModel model"
 
-        db_table = "users"
+        db_table = "user"
