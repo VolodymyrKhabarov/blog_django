@@ -1,0 +1,4 @@
+"""
+Users application serializers.
+
+"""

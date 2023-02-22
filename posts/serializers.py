@@ -1,0 +1,4 @@
+"""
+Posts application serializers.
+
+"""
