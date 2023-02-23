@@ -15,12 +15,24 @@ class UserModelSerializer(serializers.ModelSerializer):
     """
 
     password = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
 
     class Meta:
-
         model = UserModel
-        fields = "id", "username", "email", "password"
+        fields = "id", "username", "email", "password", "password2"
 
-        def create(self, validated_data):
-            user = UserModel.objects.create_user(**validated_data)
-            return user
+    def validate(self, attrs):
+        """
+        Check that the passwords match
+        """
+        password = attrs.get("password")
+        password2 = attrs.get("password2")
+
+        if password != password2:
+            raise serializers.ValidationError("Passwords do not match")
+
+        return attrs
+
+    def create(self, validated_data):
+        user = UserModel.objects.create_user(**validated_data)
+        return user
