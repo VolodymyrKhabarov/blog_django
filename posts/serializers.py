@@ -3,7 +3,10 @@ Posts application serializers.
 
 """
 
+from django.core.validators import MinLengthValidator
+from django.utils.text import slugify
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from posts.models import BlogpostCategoryModel, BlogpostModel
 
@@ -23,10 +26,20 @@ class BlogpostModelSerializer(serializers.ModelSerializer):
     Serializer for the BlogpostModel model
     """
     category = BlogpostCategoryModelSerializer()
+    slug = serializers.SlugField(max_length=64, validators=[
+            UniqueValidator(queryset=BlogpostModel.objects.all()),
+            MinLengthValidator(1)
+        ])
 
     class Meta:
         model = BlogpostModel
         fields = "id", "title", "body", "slug", "created_at", "updated_at", "category"
+
+    def validate(self, data):
+        if "title" in data and "slug" in data:
+            if slugify(data["title"]) != data["slug"]:
+                raise serializers.ValidationError("Slug does not match the title")
+        return data
 
     def create(self, validated_data):
         category_data = validated_data.pop("category")
