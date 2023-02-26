@@ -26,10 +26,6 @@ class BlogpostModelSerializer(serializers.ModelSerializer):
     Serializer for the BlogpostModel model
     """
     category = BlogpostCategoryModelSerializer()
-    slug = serializers.SlugField(max_length=64, validators=[
-            UniqueValidator(queryset=BlogpostModel.objects.all()),
-            MinLengthValidator(1)
-        ])
 
     class Meta:
         model = BlogpostModel
@@ -49,3 +45,18 @@ class BlogpostModelSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Category does not exist")
         blogpost = BlogpostModel.objects.create(category=category, **validated_data)
         return blogpost
+
+    def update(self, instance, validated_data):
+        category_data = validated_data.pop("category")
+        try:
+            category = BlogpostCategoryModel.objects.get(name=category_data["name"])
+        except BlogpostCategoryModel.DoesNotExist:
+            raise serializers.ValidationError("Category does not exist")
+        instance.category, created = BlogpostCategoryModel.objects.update_or_create(
+            name=category_data["name"], defaults=category_data
+        )
+        instance.title = validated_data.get("title", instance.title)
+        instance.body = validated_data.get("body", instance.body)
+        instance.slug = validated_data.get("slug", instance.slug)
+        instance.save()
+        return instance
