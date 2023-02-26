@@ -4,6 +4,7 @@ API application views
 """
 
 from rest_framework import viewsets
+from rest_framework.response import Response
 
 
 from posts.models import BlogpostCategoryModel, BlogpostModel
@@ -26,6 +27,13 @@ class BlogpostViewSet(viewsets.ModelViewSet):
     """
     queryset = BlogpostModel.objects.all()
     serializer_class = BlogpostModelSerializer
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 class UserViewSet(viewsets.ModelViewSet):
