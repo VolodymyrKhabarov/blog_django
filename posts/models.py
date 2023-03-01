@@ -4,6 +4,8 @@ Module for defining and describing posts models.
 from django.db import models
 from django.utils.text import slugify
 
+from users.models import UserModel
+
 
 class BlogpostCategoryModel(models.Model):
     "Class for defining and describing BlogpostCategoryModel model"
@@ -38,6 +40,7 @@ class BlogpostModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_column="created")
     updated_at = models.DateTimeField(auto_now=True, db_column="updated")
     category = models.ForeignKey(BlogpostCategoryModel, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserModel, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
