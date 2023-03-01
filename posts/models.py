@@ -40,7 +40,7 @@ class BlogpostModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_column="created")
     updated_at = models.DateTimeField(auto_now=True, db_column="updated")
     category = models.ForeignKey(BlogpostCategoryModel, on_delete=models.CASCADE)
-    author = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserModel, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.title

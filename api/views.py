@@ -43,4 +43,3 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = UserModel.objects.all()
     serializer_class = UserModelSerializer
-

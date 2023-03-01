@@ -30,6 +30,7 @@ class BlogpostModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogpostModel
         fields = "id", "title", "body", "slug", "created_at", "updated_at", "category", "author"
+        read_only_fields = ("author",)
 
     def validate(self, data):
         if "title" in data and "slug" in data:
@@ -43,11 +44,9 @@ class BlogpostModelSerializer(serializers.ModelSerializer):
             category = BlogpostCategoryModel.objects.get(name=category_data["name"])
         except BlogpostCategoryModel.DoesNotExist:
             raise serializers.ValidationError("Category does not exist")
-        author = None
         request = self.context.get("request")
-        if request and hasattr(request, "user"):
-            author = request.user
-        blogpost = BlogpostModel.objects.create(category=category, **validated_data)
+        author = request.user if request and hasattr(request, "user") else None
+        blogpost = BlogpostModel.objects.create(category=category, author=author, **validated_data)
         return blogpost
 
     def update(self, instance, validated_data):
