@@ -6,7 +6,7 @@ API application views
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-
+from api.permissions import IsAuthenticatedOrReadOnly
 from posts.models import BlogpostCategoryModel, BlogpostModel
 from posts.serializers import BlogpostCategoryModelSerializer, BlogpostModelSerializer
 from users.models import UserModel
@@ -27,6 +27,7 @@ class BlogpostViewSet(viewsets.ModelViewSet):
     """
     queryset = BlogpostModel.objects.all()
     serializer_class = BlogpostModelSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
