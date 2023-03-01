@@ -1,3 +1,8 @@
+"""
+This module defines the permissions used in the API application.
+
+"""
+
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 class IsAuthenticatedOrReadOnly(BasePermission):
