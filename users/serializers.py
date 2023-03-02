@@ -29,5 +29,8 @@ class UserModelSerializer(serializers.ModelSerializer):
         return user
 
     def get_token(self, obj):
+        """
+        Retrieves or creates a token for the user object.
+        """
         token, created = Token.objects.get_or_create(user=obj)
         return token.key

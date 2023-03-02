@@ -11,16 +11,15 @@ class IsAuthenticatedOrReadOnly(BasePermission):
     """
 
     def has_permission(self, request, view):
-        # Read-only permissions are allowed for any request
+
         if request.method in SAFE_METHODS:
             return True
 
-        # Write permissions are only allowed to authenticated users
         return request.user and request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        # Allow write permissions for authenticated users who are the authors of the blogpost
-        if request.method in ['PUT', 'PATCH', 'DELETE']:
+
+        if request.method in ["PUT", "PATCH", "DELETE"]:
             return obj.author == request.user
-        # Read-only permissions are allowed for any request
+
         return True

@@ -3,10 +3,7 @@ Posts application serializers.
 
 """
 
-from django.core.validators import MinLengthValidator
-from django.utils.text import slugify
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 
 from posts.models import BlogpostCategoryModel, BlogpostModel
 
