@@ -30,13 +30,7 @@ class BlogpostModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogpostModel
         fields = "id", "title", "body", "slug", "created_at", "updated_at", "category", "author"
-        read_only_fields = ("author",)
-
-    def validate(self, data):
-        if "title" in data and "slug" in data:
-            if slugify(data["title"]) != data["slug"]:
-                raise serializers.ValidationError("Slug does not match the title")
-        return data
+        read_only_fields = ("id", "author", "slug", "created_at", "updated_at")
 
     def create(self, validated_data):
         category_data = validated_data.pop("category")
