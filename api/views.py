@@ -28,6 +28,7 @@ class BlogpostViewSet(viewsets.ModelViewSet):
     queryset = BlogpostModel.objects.all()
     serializer_class = BlogpostModelSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    lookup_field = "slug"
 
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
